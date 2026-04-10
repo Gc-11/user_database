@@ -60,4 +60,8 @@ app.get("/search", async (req, res) => {
   const result = await User.find(query);
   res.json(result);
 });
-module.exports = app;
+
+app.listen(process.env.PORT, () => {
+  console.log("Server running on port 3000");
+});
+
