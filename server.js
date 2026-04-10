@@ -35,14 +35,21 @@ app.post("/addUser", async (req, res) => {
 });
 
 // ✅ READ (GET)
+// ✅ READ (GET) - Optimized for Vercel
 app.get("/users", async (req, res) => {
   try {
+    // Check if we are connected; if not, wait for connection
+    if (mongoose.connection.readyState !== 1) {
+       await mongoose.connect(process.env.MONGO_URI);
+    }
     const users = await User.find();
     res.json(users);
   } catch (err) {
-    res.status(500).json(err.message);
+    console.error("GET_USERS_ERROR:", err);
+    res.status(500).json({ error: err.message });
   }
 });
+
 
 // ✅ UPDATE (PUT)
 app.put("/updateUser/:id", async (req, res) => {
@@ -54,24 +61,43 @@ app.put("/updateUser/:id", async (req, res) => {
   res.json(updated);
 });
 
-// ✅ DELETE
+/// ✅ DELETE - Hardened for Serverless
 app.delete("/deleteUser/:id", async (req, res) => {
-  await User.findByIdAndDelete(req.params.id);
-  res.json("User deleted");
+  try {
+    // Safety check: Ensure DB is connected before deleting
+    if (mongoose.connection.readyState !== 1) {
+      await mongoose.connect(process.env.MONGO_URI);
+    }
+    
+    await User.findByIdAndDelete(req.params.id);
+    res.json({ message: "User deleted" }); // Returning an object is better practice
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-// 🔍 QUERYING & FILTERING
+// 🔍 QUERYING & FILTERING - Hardened for Serverless
 app.get("/search", async (req, res) => {
-  const { name, age, hobby, text } = req.query;
-  const query = {};
-  if (name) query.name = name;
-  if (age) query.age = age;
-  if (hobby) query.hobbies = hobby;
-  if (text) query.$text = { $search: text };
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      await mongoose.connect(process.env.MONGO_URI);
+    }
 
-  const result = await User.find(query);
-  res.json(result);
+    const { name, age, hobby, text } = req.query;
+    const query = {};
+    
+    if (name) query.name = new RegExp(name, 'i'); // 'i' makes it case-insensitive
+    if (age) query.age = age;
+    if (hobby) query.hobbies = hobby;
+    if (text) query.$text = { $search: text };
+
+    const result = await User.find(query);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
+
 
 // 3. IMPORTANT: Only listen if NOT on Vercel
 // Vercel manages the port and execution context itself.
