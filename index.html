@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Control Terminal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* High-Voltage Font Imports */
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Red+Hat+Mono:wght@400;700&display=swap');
+
+    body {
+      background-color: #000000;
+      color: #ffffff;
+      font-family: 'Red Hat Mono', monospace;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-image: 
+        linear-gradient(to right, #111 1px, transparent 1px),
+        linear-gradient(to bottom, #111 1px, transparent 1px);
+      background-size: 40px 40px;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    .header-font { 
+        font-family: 'Bebas Neue', sans-serif; 
+        letter-spacing: 4px;
+    }
+    
+    .accent-text { color: #fbff00; }
+    .accent-bg { background-color: #fbff00; }
+
+    /* Floating Emojis */
+    .emoji {
+      position: absolute;
+      font-size: 30px;
+      animation: float 8s linear infinite;
+      opacity: 0.3;
+      pointer-events: none;
+      filter: drop-shadow(0 0 10px rgba(251, 255, 0, 0.2));
+      z-index: 0;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(110vh) rotate(0deg); }
+      100% { transform: translateY(-10vh) rotate(360deg); }
+    }
+
+    .terminal-card {
+      background: #0a0a0a;
+      border: 2px solid #222;
+      position: relative;
+      z-index: 10;
+    }
+
+    .terminal-card::before {
+      content: "DATA_NODE";
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: #000;
+      padding: 0 10px;
+      font-size: 10px;
+      color: #fbff00;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    input, textarea {
+      background: #111 !important;
+      border: 1px solid #333 !important;
+      color: #fbff00 !important;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+      font-family: 'Red Hat Mono', monospace;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #fbff00 !important;
+      outline: none;
+      box-shadow: 0 0 15px rgba(251, 255, 0, 0.1);
+    }
+
+    .btn-cyber {
+      background: #fbff00;
+      color: #000;
+      font-weight: 900;
+      text-transform: uppercase;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 2px;
+    }
+
+    .btn-cyber:hover {
+      background: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(251, 255, 0, 0.4);
+    }
+
+    .user-item {
+      border-left: 4px solid #fbff00;
+      background: rgba(255, 255, 255, 0.03);
+      transition: 0.2s;
+    }
+
+    .user-item:hover {
+      background: rgba(251, 255, 0, 0.08);
+      border-left-width: 12px;
+    }
+
+    /* Scrollbar Styling */
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #000; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #fbff00; }
+  </style>
+</head>
+<body class="p-6 md:p-12">
+
+  <div class="emoji" style="left:5%; animation-delay:0s;">🚀</div>
+  <div class="emoji" style="left:25%; animation-delay:2s;">🔥</div>
+  <div class="emoji" style="left:45%; animation-delay:4s;">💻</div>
+  <div class="emoji" style="left:65%; animation-delay:1s;">✨</div>
+  <div class="emoji" style="left:85%; animation-delay:3s;">🎯</div>
+
+  <div class="max-w-6xl mx-auto">
+    <header class="mb-16">
+      <h1 class="header-font text-6xl md:text-8xl font-bold uppercase leading-[0.8]">
+        User <br><span class="accent-text italic">Management</span>
+      </h1>
+      <div class="flex items-center gap-4 mt-6">
+        <div class="h-[3px] w-20 accent-bg"></div>
+        <span class="text-[11px] tracking-[0.5em] text-gray-500 uppercase font-black">Secure Registry Access Point</span>
+      </div>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+      
+      <div class="lg:col-span-5">
+        <div class="terminal-card p-8 rounded-sm shadow-2xl">
+          <h2 class="header-font text-3xl mb-8 flex items-center gap-3 uppercase">
+            <span class="accent-text">/</span> Add Subject
+          </h2>
+
+          <form id="userForm" class="space-y-4">
+            <input type="text" id="name" placeholder="Subject Name" required class="w-full p-4">
+            <input type="email" id="email" placeholder="Email Address" required class="w-full p-4">
+            
+            <div class="grid grid-cols-2 gap-4">
+              <input type="number" id="age" placeholder="Age" class="p-4">
+              <input type="text" id="userId" placeholder="ID Tag" class="p-4">
+            </div>
+
+            <input type="text" id="hobbies" placeholder="Hobbies (comma separated)" class="w-full p-4">
+            <textarea id="bio" placeholder="Subject Bio" class="w-full p-4 h-24 focus:outline-none"></textarea>
+
+            <button type="submit" class="btn-cyber w-full py-5 text-2xl mt-4">
+              Initialize User 🚀
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="lg:col-span-7">
+        <div class="terminal-card p-8 rounded-sm">
+          <div class="flex justify-between items-end mb-10 border-b border-zinc-800 pb-6">
+            <h2 class="header-font text-3xl uppercase tracking-widest">Database <span class="accent-text">Registry</span></h2>
+            <button onclick="getUsers()" class="text-[10px] accent-text font-black border border-[#fbff00]/50 px-4 py-2 hover:bg-[#fbff00] hover:text-black transition-all tracking-[0.2em]">
+              REFRESH_LINK
+            </button>
+          </div>
+
+          <ul id="userList" class="space-y-4 max-h-[600px] overflow-y-auto pr-4 custom-scrollbar">
+            <div class="text-zinc-700 text-xs font-bold uppercase tracking-widest animate-pulse">
+              [ STATUS: Connection Idle... Click Refresh ]
+            </div>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const API = "http://localhost:3000";
+
+    document.getElementById("userForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const user = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        age: Number(document.getElementById("age").value),
+        hobbies: document.getElementById("hobbies").value.split(","),
+        bio: document.getElementById("bio").value,
+        userId: document.getElementById("userId").value
+      };
+
+      try {
+        await fetch(API + "/addUser", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(user)
+        });
+        console.log("LOG: SUBJECT_INITIALIZED");
+        getUsers();
+        document.getElementById("userForm").reset();
+      } catch (err) {
+        console.error("FATAL: REGISTRATION_FAILED", err);
+      }
+    });
+
+    async function getUsers() {
+      try {
+        const res = await fetch(API + "/users");
+        const users = await res.json();
+
+        const list = document.getElementById("userList");
+        list.innerHTML = "";
+
+        if (users.length === 0) {
+            list.innerHTML = `<div class="text-zinc-800 text-sm italic">Registry is currently empty.</div>`;
+            return;
+        }
+
+        users.forEach(u => {
+          const li = document.createElement("li");
+          li.className = "user-item p-5 flex justify-between items-center";
+          li.innerHTML = `
+            <div>
+              <div class="font-black text-white uppercase text-base tracking-tighter">${u.name}</div>
+              <div class="text-[10px] accent-text font-bold opacity-70 tracking-widest uppercase">${u.email}</div>
+            </div>
+            <div class="flex gap-3">
+              <button class="bg-zinc-900 border border-zinc-800 p-2 hover:bg-white hover:text-black transition-all" onclick="updateUser('${u._id}')">✏️</button>
+              <button class="bg-zinc-900 border border-zinc-800 p-2 hover:bg-red-600 hover:border-red-600 transition-all" onclick="deleteUser('${u._id}')">🗑️</button>
+            </div>
+          `;
+          list.appendChild(li);
+        });
+      } catch (err) {
+        console.error("FATAL: DATABASE_UNREACHABLE", err);
+      }
+    }
+
+    async function deleteUser(id) {
+      if(confirm("AUTHORIZE DELETION?")) {
+          await fetch(API + "/deleteUser/" + id, { method: "DELETE" });
+          getUsers();
+      }
+    }
+
+    async function updateUser(id) {
+      const newName = prompt("Enter new subject name:");
+      if (!newName) return;
+
+      await fetch(API + "/updateUser/" + id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newName })
+      });
+
+      getUsers();
+    }
+  </script>
+</body>
+</html>
