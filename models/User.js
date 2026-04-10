@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
-    // REMOVED: expires: 60 (No more auto-delete!)
+   
   }
 });
 
